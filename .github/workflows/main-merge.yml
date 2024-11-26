@@ -53,7 +53,5 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker tag reverse-todo-list_frontend:latest ${{ secrets.DOCKER_USERNAME }}/reverse-todo-list-frontend:latest
-          docker tag reverse-todo-list_backend:latest ${{ secrets.DOCKER_USERNAME }}/reverse-todo-list-backend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/reverse-todo-list-frontend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/reverse-todo-list-backend:latest
