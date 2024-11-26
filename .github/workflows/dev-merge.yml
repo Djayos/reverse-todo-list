@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Récupérer le code
+      # Étape 1 : Checkout du code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Étape 2 : Installer les dépendances
+      # Étape 2 : Installer les dépendances (frontend et backend)
       - name: Install Dependencies - Backend
         run: |
           cd backend
@@ -25,7 +25,7 @@ jobs:
           cd frontend
           npm install
 
-      # Étape 3 : Exécuter les tests unitaires
+      # Étape 3 : Exécuter les tests
       - name: Run Tests - Backend
         run: |
           cd backend
@@ -38,10 +38,8 @@ jobs:
 
       # Étape 4 : Fusionner dev dans main si les tests réussissent
       - name: Merge dev into main
-        uses: peter-evans/create-pull-request@v5
+        uses: devops-actions/merge-branch@v3.5
         with:
-          branch: main
-          commit-message: "Merge dev into main via CI"
-          title: "Merge dev into main"
-          body: "This merge was triggered automatically by the dev branch workflow."
-          labels: merge
+          source_branch: dev
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
