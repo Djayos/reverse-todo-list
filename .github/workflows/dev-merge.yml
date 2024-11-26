@@ -55,18 +55,15 @@ jobs:
           cd frontend
           npm test
 
-      # Étape 8 : Configurer Git (nécessaire pour create-pull-request)
+      # Étape 8 : Configurer Git (nécessaire pour effectuer un push)
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      # Étape 9 : Fusionner dev dans main
-      - name: Merge dev into main
-        uses: peter-evans/create-pull-request@v5
-        with:
-          branch: main
-          commit-message: "Merge dev into main via CI"
-          title: "Merge dev into main"
-          body: "This merge was triggered automatically by the dev branch workflow."
-          labels: merge
+      # Étape 9 : Fusionner dev dans main (via commit direct)
+      - name: Push dev to main
+        run: |
+          git checkout main
+          git merge dev
+          git push origin main
