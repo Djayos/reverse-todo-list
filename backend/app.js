@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const taskRoutes = require("./routes/tasks");
 const cors = require('cors');
 
+// add some code to test and connect the db
+
 const app = express();
 
 app.use(cors());
