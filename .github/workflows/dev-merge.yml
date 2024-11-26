@@ -5,6 +5,10 @@ on:
     branches:
       - dev
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -51,7 +55,13 @@ jobs:
           cd frontend
           npm test
 
-      # Étape 8 : Fusionner dev dans main si les tests réussissent
+      # Étape 8 : Configurer Git (nécessaire pour create-pull-request)
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      # Étape 9 : Fusionner dev dans main
       - name: Merge dev into main
         uses: peter-evans/create-pull-request@v5
         with:
