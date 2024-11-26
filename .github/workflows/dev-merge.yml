@@ -1,0 +1,45 @@
+name: CI - Dev Branch Workflow
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Checkout du code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Installer les dépendances (frontend et backend)
+      - name: Install Dependencies - Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Install Dependencies - Frontend
+        run: |
+          cd frontend
+          npm install
+
+      # Étape 3 : Exécuter les tests
+      - name: Run Tests - Backend
+        run: |
+          cd backend
+          npm test
+
+      - name: Run Tests - Frontend
+        run: |
+          cd frontend
+          npm test
+
+      # Étape 4 : Fusionner dev dans main si les tests réussissent
+      - name: Merge dev into main
+        uses: devops-actions/merge-branch@v3.5
+        with:
+          source_branch: dev
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}

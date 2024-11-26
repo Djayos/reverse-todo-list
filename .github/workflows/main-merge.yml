@@ -1,0 +1,51 @@
+name: CI/CD - Main Branch Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Checkout du code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Installer les dépendances (frontend et backend)
+      - name: Install Dependencies - Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Install Dependencies - Frontend
+        run: |
+          cd frontend
+          npm install
+
+      # Étape 3 : Lancer les tests
+      - name: Run Tests - Backend
+        run: |
+          cd backend
+          npm test
+
+      - name: Run Tests - Frontend
+        run: |
+          cd frontend
+          npm test
+
+      # Étape 4 : Construire les images Docker
+      - name: Build Docker Images
+        run: |
+          docker-compose build
+
+      # Étape 5 : Pousser les images Docker sur Docker Hub
+      - name: Push Docker Images to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker-compose push
