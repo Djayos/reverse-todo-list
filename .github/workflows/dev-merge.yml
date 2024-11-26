@@ -14,29 +14,44 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Étape 2 : Installer les dépendances (frontend et backend)
+      # Étape 2 : Installer les dépendances Backend
       - name: Install Dependencies - Backend
         run: |
           cd backend
           npm install
 
-      - name: Install Dependencies - Frontend
+      # Étape 3 : Réinstaller les dépendances Backend (optionnel)
+      - name: Clean and Install Dependencies - Backend
         run: |
-          cd frontend
+          cd backend
+          rm -rf node_modules
           npm install
 
-      # Étape 3 : Exécuter les tests
+      # Étape 4 : Corriger les permissions Jest
+      - name: Fix Jest Permissions
+        run: |
+          cd backend
+          chmod +x ./node_modules/.bin/jest
+
+      # Étape 5 : Exécuter les tests Backend
       - name: Run Tests - Backend
         run: |
           cd backend
           npx jest
 
+      # Étape 6 : Installer les dépendances Frontend
+      - name: Install Dependencies - Frontend
+        run: |
+          cd frontend
+          npm install
+
+      # Étape 7 : Exécuter les tests Frontend
       - name: Run Tests - Frontend
         run: |
           cd frontend
           npm test
 
-      # Étape 4 : Fusionner dev dans main si les tests réussissent
+      # Étape 8 : Fusionner dev dans main si les tests réussissent
       - name: Merge dev into main
         uses: peter-evans/create-pull-request@v5
         with:
