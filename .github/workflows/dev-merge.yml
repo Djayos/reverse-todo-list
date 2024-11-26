@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies - Backend
         run: |
           cd backend
-          npm install
+          npx jest
 
       - name: Install Dependencies - Frontend
         run: |
