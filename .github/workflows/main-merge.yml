@@ -17,46 +17,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Installer Docker Compose
+      # 1. Installer Docker Compose
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      # Étape 2 : Checkout du code
+      # 2. Checkout du code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Étape 3 : Installer les dépendances Backend
+      # 3. Installer les dépendances Backend
       - name: Install Dependencies - Backend
         run: |
           cd backend
           npm install
 
-      # Étape 4 : Exécuter les tests Backend
+      # 4. Exécuter les tests Backend
       - name: Run Tests - Backend
         run: |
           cd backend
           npx jest
 
-      # Étape 5 : Installer les dépendances Frontend
+      # 5. Installer les dépendances Frontend
       - name: Install Dependencies - Frontend
         run: |
           cd frontend
           npm install
 
-      # Étape 6 : Exécuter les tests Frontend
+      # 6. Exécuter les tests Frontend
       - name: Run Tests - Frontend
         run: |
           cd frontend
           npm test
 
-      # Étape 7 : Construire les images Docker
+      # 7. Construire les images Docker
       - name: Build Docker Images
         run: |
           docker-compose build
 
-      # Étape 8 : Pousser les images Docker sur Docker Hub
+      # 8. Pousser les images Docker sur Docker Hub
       - name: Push Docker Images to Docker Hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
